@@ -1,6 +1,11 @@
 #include "wx/wx.h"
 #include "toDO.hpp"
+#include <string>
 
+wxBEGIN_EVENT_TABLE(toDO, wxFrame)
+    EVT_BUTTON(ID_Button, toDO::Add)
+    EVT_TEXT_ENTER(ID_Text, toDO::Add)
+wxEND_EVENT_TABLE()
 
 toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     wxMenu *menu= new wxMenu;
@@ -38,10 +43,14 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     this-> SetSizerAndFit(sizer);
 
 
-    wxTextCtrl *text= new wxTextCtrl(panelbot, wxID_ANY, wxEmptyString, wxPoint(10,10), wxSize(200,50));
+    text= new wxTextCtrl(panelbot, ID_Text, wxEmptyString, wxPoint(10,10), wxSize(200,50),wxTE_PROCESS_ENTER);
     wxButton *button= new wxButton(panelbot, ID_Button, "ADD", wxPoint(220,10), wxSize(50,50));
     
     //wxTextEntry *textent =new wxTextEntry();
+    wxStaticText *done= new wxStaticText(panelright,wxID_ANY,"Already Done!");
+
+    auto *list= new wxCheckListBox(panelleft,wxID_ANY);
+    
 }
 
 void toDO::Exit(wxCommandEvent& event){
@@ -51,6 +60,9 @@ void toDO::Exit(wxCommandEvent& event){
 void toDO::Smth(wxCommandEvent& event){
     //wxLog
 }
+
 void toDO:: Add(wxCommandEvent& event){
-    //std::cout<<
+    wxString line = text->GetLineText(0);
+    std::cout<<line;
+;
 }

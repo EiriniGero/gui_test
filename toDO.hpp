@@ -7,16 +7,16 @@ class toDO:public wxFrame{
 
     enum{
         ID_smth=1,
-        ID_Button=2
+        ID_Button=2,
+        ID_Text=3
     };
     private:
+        wxTextCtrl *text;
+
         void Add(wxCommandEvent& event);
         void Exit(wxCommandEvent& event);
         void Smth(wxCommandEvent& event);
     
-    //wxDECLARE_EVENT_TABLE();
+    wxDECLARE_EVENT_TABLE();
 
 };
-/*wxBEGIN_EVENT_TABLE(toDO, wxFrame)
-EVT_BUTTON(ID_Button, toDO::Add)
-wxEND_EVENT_TABLE()*/

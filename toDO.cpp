@@ -7,13 +7,18 @@ wxBEGIN_EVENT_TABLE(toDO, wxFrame)
     EVT_BUTTON(ID_Button, toDO::Add)
     EVT_TEXT_ENTER(ID_Text, toDO::Add)
     EVT_BUTTON(ID_BtnDone, toDO::Donee)
+    EVT_BUTTON(ID_BtnClear, toDO::Clear)
 wxEND_EVENT_TABLE()
 
 toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
+    //fonts
+    wxFont myFont=wxFontInfo(12).Bold();
+    wxFont myFontt=wxFontInfo(9).Bold();
+    
     wxMenu *menu= new wxMenu;
     menu->Append(wxID_EXIT);
     menu->AppendSeparator();
-    menu->Append(ID_smth,"Somthing \tCtrl-S","That is indeed somthing");
+    menu->Append(ID_ClearAll,"Clear All \tCtrl-D","Clear Everithing");
     
 
     wxMenuBar *bar= new wxMenuBar;
@@ -22,7 +27,7 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
 
     SetMenuBar(bar);
 
-    Bind(wxEVT_MENU, &toDO::Smth, this, ID_smth);
+    Bind(wxEVT_MENU, &toDO::ClearAll, this, ID_ClearAll);
     Bind(wxEVT_MENU, &toDO::Exit, this, wxID_EXIT);
 
     wxPanel *panelleft= new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(300,150));
@@ -45,32 +50,71 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     this-> SetSizerAndFit(sizer);
 
 
-    //pano plesio lista
-    list= new wxListBox(panelleft,wxID_ANY,wxPoint(10,10), wxSize(350,250),0,NULL);
-    wxButton *btnDone= new wxButton(panelleft,ID_BtnDone, "Done",wxPoint(365,10),wxSize(50,50));
 
-    //kato plesio
-    text= new wxTextCtrl(panelbot, ID_Text, wxEmptyString, wxPoint(10,10), wxSize(200,50),wxTE_PROCESS_ENTER,wxDefaultValidator,"Heloo");
-    wxButton *button= new wxButton(panelbot, ID_Button, "ADD", wxPoint(220,10), wxSize(50,50));
+    //pano aristera lista
+    wxStaticText *leftext= new wxStaticText(panelleft,wxID_ANY,"TO DO",wxPoint(155,10),wxSize(350,30));
+    leftext->SetForegroundColour(wxColor(240,128,128));
+    leftext->SetFont(myFont);
+
+    list= new wxListBox(panelleft,wxID_ANY,wxPoint(10,40), wxSize(350,250),0,NULL);
+    list-> SetBackgroundColour(wxColor(245,245,220));
+    list-> SetForegroundColour(wxColor(47, 47, 47));
+    list->SetFont(myFont);
+
+    wxButton *btnDone= new wxButton(panelleft,ID_BtnDone, "DONE",wxPoint(370,40),wxSize(60,50));
+    btnDone-> SetForegroundColour(wxColor(250,250,250));
+    btnDone-> SetBackgroundColour(wxColor(240,128,128));
+    btnDone->SetFont(myFontt);
 
     //dejia done
-    wxStaticText *m= new wxStaticText(panelright,wxID_ANY,"Already Done!");
-    done= new wxListBox(panelright,wxID_ANY,wxPoint(20,30),wxSize(200,200));
+    wxStaticText *rightext= new wxStaticText(panelright,wxID_ANY,"Already Done!",wxPoint(80,10),wxSize(200,30));
+    rightext->SetForegroundColour(wxColor(240,128,128));
+    rightext->SetFont(myFont);
+
+    done= new wxListBox(panelright,wxID_ANY,wxPoint(35,40),wxSize(200,200));
+    done-> SetBackgroundColour(wxColor(255,228,225));
+    done-> SetForegroundColour(wxColor(61, 61, 61));
+    done->SetFont(myFont);
+
+    wxButton *btnClear=new wxButton(panelright, ID_BtnClear,"CLEAR",wxPoint(35,230),wxSize(200,50));
+    btnClear->SetForegroundColour(wxColor(250,250,250));
+    btnClear->SetBackgroundColour(wxColor(240,128,128));
+    btnClear->SetFont(myFontt);
+
+    //kato plesio
+    wxStaticText *botext= new wxStaticText(panelbot,wxID_ANY,"Do you want to add somthing?",wxPoint(10,10),wxSize(500,30));
+    botext->SetForegroundColour(wxColor(47, 47, 47));
+    botext->SetFont(myFontt);
+
+    text= new wxTextCtrl(panelbot, ID_Text, wxEmptyString, wxPoint(10,35), wxSize(500,50),wxTE_PROCESS_ENTER);
+    text-> SetBackgroundColour(wxColor(255,182,193));
+    text-> SetForegroundColour(wxColor(47, 47, 47));
+    text->SetFont(myFontt);
+
+    wxButton *button= new wxButton(panelbot, ID_Button, "ADD", wxPoint(500,35), wxSize(60,50));
+    button-> SetForegroundColour(wxColor(250,250,250));
+    button-> SetBackgroundColour(wxColor(240,128,128));
+    button->SetFont(myFontt);
 }
 
 void toDO::Exit(wxCommandEvent& event){
     Close(true);
 }
 
-void toDO::Smth(wxCommandEvent& event){
-    //wxLog
+void toDO::ClearAll(wxCommandEvent& event){
+    text->Clear();
+    list->Clear();
+    done->Clear();
+    lista.clear();
 }
 
 void toDO::Add(wxCommandEvent& event){
     wxString line = text->GetLineText(0);
-    list-> Append(line);
-    lista.push_back(line);
-    
+    if(line!=""){
+        list-> Append(line);
+        text->Clear();
+        lista.push_back(line);
+    }
 }
 
 void toDO::Donee(wxCommandEvent& event){
@@ -78,5 +122,10 @@ void toDO::Donee(wxCommandEvent& event){
     if (pos!= wxNOT_FOUND){
         list-> Delete(pos);
         done->Append(lista[pos]);
+        lista.erase(lista.begin()+ pos);
     }
+}
+
+void toDO::Clear(wxCommandEvent& event){
+    done->Clear();
 }

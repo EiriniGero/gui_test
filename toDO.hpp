@@ -7,10 +7,11 @@ class toDO:public wxFrame{
         toDO();
 
     enum{
-        ID_smth=1,
+        ID_ClearAll=1,
         ID_Button=2,
         ID_BtnDone=3,
-        ID_Text=4
+        ID_Text=4,
+        ID_BtnClear=5
     };
     private:
         wxTextCtrl *text;
@@ -22,8 +23,9 @@ class toDO:public wxFrame{
 
         void Add(wxCommandEvent& event);
         void Exit(wxCommandEvent& event);
-        void Smth(wxCommandEvent& event);
+        void ClearAll(wxCommandEvent& event);
         void Donee(wxCommandEvent& event);
+        void Clear(wxCommandEvent& event);
     
     wxDECLARE_EVENT_TABLE();
 

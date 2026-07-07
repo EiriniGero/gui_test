@@ -1,10 +1,12 @@
 #include "wx/wx.h"
 #include "toDO.hpp"
 #include <string>
+#include <vector>
 
 wxBEGIN_EVENT_TABLE(toDO, wxFrame)
     EVT_BUTTON(ID_Button, toDO::Add)
     EVT_TEXT_ENTER(ID_Text, toDO::Add)
+    EVT_BUTTON(ID_BtnDone, toDO::Donee)
 wxEND_EVENT_TABLE()
 
 toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
@@ -43,14 +45,17 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     this-> SetSizerAndFit(sizer);
 
 
-    text= new wxTextCtrl(panelbot, ID_Text, wxEmptyString, wxPoint(10,10), wxSize(200,50),wxTE_PROCESS_ENTER);
-    wxButton *button= new wxButton(panelbot, ID_Button, "ADD", wxPoint(220,10), wxSize(50,50));
-    
-    //wxTextEntry *textent =new wxTextEntry();
-    wxStaticText *done= new wxStaticText(panelright,wxID_ANY,"Already Done!");
+    //pano plesio lista
+    list= new wxListBox(panelleft,wxID_ANY,wxPoint(10,10), wxSize(350,250),0,NULL);
+    wxButton *btnDone= new wxButton(panelleft,ID_BtnDone, "Done",wxPoint(365,10),wxSize(50,50));
 
-    auto *list= new wxCheckListBox(panelleft,wxID_ANY);
-    
+    //kato plesio
+    text= new wxTextCtrl(panelbot, ID_Text, wxEmptyString, wxPoint(10,10), wxSize(200,50),wxTE_PROCESS_ENTER,wxDefaultValidator,"Heloo");
+    wxButton *button= new wxButton(panelbot, ID_Button, "ADD", wxPoint(220,10), wxSize(50,50));
+
+    //dejia done
+    wxStaticText *m= new wxStaticText(panelright,wxID_ANY,"Already Done!");
+    done= new wxListBox(panelright,wxID_ANY,wxPoint(20,30),wxSize(200,200));
 }
 
 void toDO::Exit(wxCommandEvent& event){
@@ -61,8 +66,17 @@ void toDO::Smth(wxCommandEvent& event){
     //wxLog
 }
 
-void toDO:: Add(wxCommandEvent& event){
+void toDO::Add(wxCommandEvent& event){
     wxString line = text->GetLineText(0);
-    std::cout<<line;
-;
+    list-> Append(line);
+    lista.push_back(line);
+    
+}
+
+void toDO::Donee(wxCommandEvent& event){
+    int pos= list-> GetSelection();
+    if (pos!= wxNOT_FOUND){
+        list-> Delete(pos);
+        done->Append(lista[pos]);
+    }
 }

@@ -18,12 +18,14 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     wxMenu *menu= new wxMenu;
     menu->Append(wxID_EXIT);
     menu->AppendSeparator();
-    menu->Append(ID_ClearAll,"Clear All \tCtrl-D","Clear Everithing");
+    menu->Append(ID_ClearAll,"Clear All \tCtrl-D","Clear Everything");
     
 
     wxMenuBar *bar= new wxMenuBar;
-    bar->Append(menu,"Here!");
+    bar->Append(menu,"More!");
     bar->SetBackgroundColour(wxColor(240,128,128));
+    bar->SetForegroundColour(wxColor(250,250,250));
+    bar-> SetFont(myFontt);
 
     SetMenuBar(bar);
 
@@ -58,8 +60,8 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
 
     list= new wxListBox(panelleft,wxID_ANY,wxPoint(10,40), wxSize(350,250),0,NULL);
     list-> SetBackgroundColour(wxColor(245,245,220));
-    list-> SetForegroundColour(wxColor(47, 47, 47));
-    list->SetFont(myFont);
+    list-> SetForegroundColour(wxColor(61, 61, 61));
+    list->SetFont(myFontt);
 
     wxButton *btnDone= new wxButton(panelleft,ID_BtnDone, "DONE",wxPoint(370,40),wxSize(60,50));
     btnDone-> SetForegroundColour(wxColor(250,250,250));
@@ -74,7 +76,7 @@ toDO::toDO():wxFrame(nullptr,wxID_ANY,"TO DO LIST"){
     done= new wxListBox(panelright,wxID_ANY,wxPoint(35,40),wxSize(200,200));
     done-> SetBackgroundColour(wxColor(255,228,225));
     done-> SetForegroundColour(wxColor(61, 61, 61));
-    done->SetFont(myFont);
+    done->SetFont(myFontt);
 
     wxButton *btnClear=new wxButton(panelright, ID_BtnClear,"CLEAR",wxPoint(35,230),wxSize(200,50));
     btnClear->SetForegroundColour(wxColor(250,250,250));
